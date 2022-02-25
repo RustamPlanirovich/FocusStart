@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">FocusStart</string>
+    <string name="cur_value">Value: %1$.4f</string>
+    <string name="prev_value">Previous: %1$.4f</string>
+</resources>

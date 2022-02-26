@@ -12,6 +12,9 @@ import com.example.focusstart.retrofit.model.Currency
 
 class Adapter:ListAdapter<Currency, Adapter.CustomViewHolder>(DiffCallback) {
 
+    override fun getItemViewType(position: Int): Int {
+        return if(position == 0) 0  else 1
+    }
     class CustomViewHolder(
         private val view: View
         ):RecyclerView.ViewHolder(view){

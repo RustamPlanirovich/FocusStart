@@ -1,16 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="curDate"
+            type="String" />
+        <variable
+            name="prevDate"
+            type="String" />
+        <variable
+            name="timeStamp"
+            type="String" />
+        <variable
+            name="progress"
+            type="Boolean" />
+        <import type="android.view.View" />
+    </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="8dp"
     tools:context=".MainActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler"
+    <LinearLayout
+        android:id="@+id/timeLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/currency_item"/>
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_green_light"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/curentTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{@string/cur_date(curDate)}" />
+
+        <TextView
+            android:id="@+id/previousTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{@string/prev_date(prevDate)}" />
+
+        <TextView
+            android:id="@+id/timestampTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{@string/timestamp(timeStamp)}" />
+
+        <CheckBox
+            style="@style/CustomFont"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:drawableEnd="?android:attr/listChoiceIndicatorSingle"
+            android:text="@string/autoupdate_chbx" />
+    </LinearLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constrainedHeight="true"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintTop_toBottomOf="@+id/timeLayout"
+        app:layout_constraintBottom_toTopOf="@id/linearLayout">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/currency_item" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <RelativeLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_red_light"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/charcodeTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            tools:text="CHD"/>
+
+        <TextView
+            android:id="@+id/curRateTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/white"
+            tools:text="40.0000" />
+
+        <EditText
+            android:id="@+id/valueET"
+            android:layout_width="100dp"
+            android:layout_height="20dp"
+            android:layout_below="@id/charcodeTV"
+            android:layout_marginTop="4dp"
+            android:background="@color/white"
+            android:hint="@string/input_value"
+            android:inputType="numberSigned" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/charcodeTV"
+            android:layout_toEndOf="@id/valueET"
+            android:layout_marginStart="12dp"
+            android:text="@string/result"/>
+        <TextView
+            android:id="@+id/convertedTV"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/charcodeTV"
+            android:layout_alignParentEnd="true"
+            tools:text="10.000"
+            />
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

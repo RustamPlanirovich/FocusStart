@@ -1,8 +1,10 @@
 package com.example.focusstart.retrofit.model
 
 import android.util.Log
+import com.example.focusstart.util.parseDate
 import com.google.gson.*
 import java.lang.reflect.Type
+import java.text.ParseException
 import javax.inject.Inject
 
 class RateDeserialazer @Inject constructor(): JsonDeserializer<Rate> {
@@ -13,10 +15,10 @@ class RateDeserialazer @Inject constructor(): JsonDeserializer<Rate> {
     ): Rate? {
         val jsonObject = json?.asJsonObject
         return jsonObject?.let {
-            val date = it.get("Date").asString
-            val prevDate = it.get("PreviousDate").asString
+            val date = parseDate(it.get("Date").asString)
+            val prevDate = parseDate(it.get("PreviousDate").asString)
             val prevUrl = it.get("PreviousURL").asString
-            val timestamp = it.get("Timestamp").asString
+            val timestamp = parseDate(it.get("Timestamp").asString)
             val currency = it.get("Valute").asJsonObject
             val gson = Gson()
             val currencyList = mutableListOf<Currency>()
@@ -26,5 +28,9 @@ class RateDeserialazer @Inject constructor(): JsonDeserializer<Rate> {
             }
             Rate(date, prevDate, prevUrl, timestamp, currencyList)
         }
+    }
+
+    private fun parseDate(date: String): String {
+        return date.parseDate()
     }
 }

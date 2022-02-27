@@ -1,9 +1,12 @@
 package com.example.focusstart
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.focusstart.retrofit.Repository
+import com.example.focusstart.retrofit.model.Currency
 import com.example.focusstart.retrofit.model.Rate
 import com.example.focusstart.util.State
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,6 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.awaitResponse
+import java.lang.NumberFormatException
 import java.util.*
 import javax.inject.Inject
 import kotlin.Exception
@@ -20,7 +24,9 @@ import kotlin.Exception
 class ViewModel @Inject constructor(private val repository: Repository):ViewModel() {
     private val _state = MutableStateFlow<State<Rate>>(State.Waiting)
     val state:StateFlow<State<Rate>> get() = _state.asStateFlow()
-    private  var timer:Timer? = null
+    private  var timer: Timer? = null
+    private var _currency = MutableLiveData<Currency?>(null)
+    val currency:LiveData<Currency?> get() = _currency
     init {
         getRates()
     }
@@ -30,8 +36,13 @@ class ViewModel @Inject constructor(private val repository: Repository):ViewMode
             _state.value = State.Loading
             try {
                 val answer = repository.getRates().awaitResponse()
-                if(answer.isSuccessful && answer.code() == 200) //Success code
-                    _state.value = State.Success(answer.body()!!)
+                if(answer.isSuccessful && answer.code() == 200){        //Success code
+                    val rate = answer.body()!!
+                    rate.currency.find { it.id == currency.value?.id }?.let {
+                        _currency.value = it
+                    }
+                    _state.value = State.Success(rate)
+                }
                 else
                     _state.value = State.Error(Exception("Unknown error"))
             }catch (e: Exception){
@@ -42,9 +53,9 @@ class ViewModel @Inject constructor(private val repository: Repository):ViewMode
 
     fun startAutoUpdate(){
         stopAutoUpdate()
-        val periodTime:Long = 60*1000 // 1 minit
+        val periodTime:Long = 60*1000 // 1 minute
         timer = Timer()
-        timer?.schedule(CustomTask(), 1000, 3000)
+        timer?.schedule(CustomTask(), 1000, periodTime)
     }
 
     fun stopAutoUpdate(){
@@ -52,7 +63,21 @@ class ViewModel @Inject constructor(private val repository: Repository):ViewMode
             it.cancel()
             timer = null
         }
-        Log.d("TAG", "STOPPED")
+    }
+
+    fun evaluateValue(value: String):String{
+        return try {
+                currency.value?.let {
+                    val d = (value.toDouble() * it.nominal) / it.value
+                    String.format("%.4f", d)
+                } ?: "0.0"
+        }catch (e: NumberFormatException){
+            "0.0"
+        }
+    }
+
+    fun setCurrency(curr: Currency) {
+        _currency.value = curr
     }
 
     override fun onCleared() {
@@ -60,7 +85,7 @@ class ViewModel @Inject constructor(private val repository: Repository):ViewMode
         stopAutoUpdate()
     }
 
-    inner class CustomTask:TimerTask() {
+    private inner class CustomTask:TimerTask() {
         override fun run() {
             getRates()
         }

@@ -16,45 +16,48 @@
         android:layout_marginTop="8dp"
         app:cardCornerRadius="4dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingStart="4dp"
             android:paddingEnd="4dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:orientation="horizontal">
-
                 <TextView
-                    android:id="@+id/name"
-                    android:layout_width="0dp"
+                    android:id="@+id/nameTV"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
-                    android:layout_weight="1"
+                    android:layout_alignParentStart="true"
                     android:text="@{currency.name}"
                     tools:text="Name" />
 
                 <TextView
-                    android:id="@+id/charcode"
+                    android:id="@+id/charcodeTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{currency.charCode}"
+                    android:layout_alignParentEnd="true"
                     tools:text="code" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/nominalTV"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nameTV"
+                android:text="@{@string/nominal(currency.nominal)}"
+                tools:text="Nominal"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_below="@+id/nominalTV"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp">
 
                 <TextView
-                    android:id="@+id/value"
+                    android:id="@+id/valueTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
@@ -63,13 +66,13 @@
                     tools:text="value" />
 
                 <TextView
-                    android:id="@+id/previous"
+                    android:id="@+id/previousTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@{@string/prev_value(currency.previous)}"
                     tools:text="previous" />
             </LinearLayout>
-        </LinearLayout>
+        </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </layout>

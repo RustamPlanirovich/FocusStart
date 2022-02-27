@@ -17,6 +17,9 @@
             name="progress"
             type="Boolean" />
         <import type="android.view.View" />
+        <variable
+            name="currentValue"
+            type="com.example.focusstart.retrofit.model.Currency" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
@@ -24,40 +27,66 @@
     android:layout_margin="8dp"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/timeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/holo_green_light"
-        android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/curentTV"
-            android:layout_width="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{@string/cur_date(curDate)}" />
+            android:text="@string/cur_date" />
 
         <TextView
             android:id="@+id/previousTV"
-            android:layout_width="match_parent"
+            android:layout_below="@id/curentTV"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{@string/prev_date(prevDate)}" />
+            android:text="@string/prev_date" />
 
         <TextView
             android:id="@+id/timestampTV"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{@string/timestamp(timeStamp)}" />
+            android:layout_below="@id/previousTV"
+            android:text="@string/timestamp" />
+
+        <TextView
+            android:id="@+id/currentDateTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:text="@{curDate != null ? curDate : @string/zero_time}" />
+        <TextView
+            android:id="@+id/previousDateTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/curentTV"
+            android:layout_alignParentEnd="true"
+            android:text="@{prevDate != null ? prevDate : @string/zero_time}" />
+        <TextView
+            android:id="@+id/timestampDateTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/previousTV"
+            android:layout_alignParentEnd="true"
+            android:text="@{timeStamp != null ? timeStamp : @string/zero_time}" />
 
         <CheckBox
+            android:id="@+id/autoUpdateCHB"
             style="@style/CustomFont"
+            android:layout_below="@id/timestampTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:button="@null"
             android:drawableEnd="?android:attr/listChoiceIndicatorSingle"
             android:text="@string/autoupdate_chbx" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeLayout"
@@ -88,7 +117,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            tools:text="CHD"/>
+            android:text="@{currentValue.charCode != null ? currentValue.charCode : @string/default_charcode}"
+            tools:text="CHD" />
 
         <TextView
             android:id="@+id/curRateTv"
@@ -97,17 +127,17 @@
             android:layout_alignParentEnd="true"
             android:layout_marginStart="8dp"
             android:textColor="@color/white"
+            android:text="@{Double.toString(currentValue.value)}"
             tools:text="40.0000" />
-
         <EditText
             android:id="@+id/valueET"
             android:layout_width="100dp"
-            android:layout_height="20dp"
+            android:layout_height="30dp"
             android:layout_below="@id/charcodeTV"
-            android:layout_marginTop="4dp"
-            android:background="@color/white"
-            android:hint="@string/input_value"
-            android:inputType="numberSigned" />
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:maxLength="10"
+            android:background="@color/white"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -116,15 +146,15 @@
             android:layout_toEndOf="@id/valueET"
             android:layout_marginStart="12dp"
             android:text="@string/result"/>
+
         <TextView
             android:id="@+id/convertedTV"
-            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/charcodeTV"
             android:layout_alignParentEnd="true"
-            tools:text="10.000"
-            />
+            android:textColor="@color/white"
+            tools:text="10.000" />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

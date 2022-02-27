@@ -10,17 +10,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.focusstart.databinding.CurrencyItemBinding
 import com.example.focusstart.retrofit.model.Currency
 
-class Adapter:ListAdapter<Currency, Adapter.CustomViewHolder>(DiffCallback) {
+class Adapter(private val callback: (Currency)->Unit):ListAdapter<Currency, Adapter.CustomViewHolder>(DiffCallback) {
 
-    override fun getItemViewType(position: Int): Int {
-        return if(position == 0) 0  else 1
-    }
     class CustomViewHolder(
-        private val view: View
+        private val view: View,
+        private val callback: (Currency) -> Unit
         ):RecyclerView.ViewHolder(view){
             fun bind(item: Currency){
                 val binding: CurrencyItemBinding = DataBindingUtil.bind(view)!!
                 binding.currency = item
+                itemView.setOnClickListener {
+                    callback(item)
+                }
             }
         }
 
@@ -28,7 +29,9 @@ class Adapter:ListAdapter<Currency, Adapter.CustomViewHolder>(DiffCallback) {
         val binding = CurrencyItemBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
-        return CustomViewHolder(binding.root)
+        return CustomViewHolder(binding.root){
+            callback(it)
+        }
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {

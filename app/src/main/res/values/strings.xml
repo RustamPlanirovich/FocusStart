@@ -2,11 +2,16 @@
     <string name="app_name">FocusStart</string>
     <string name="cur_value">Value: %1$.4f</string>
     <string name="prev_value">Previous: %1$.4f</string>
-    <string name="cur_date">Date: %1S</string>
-    <string name="prev_date">Previous date: %1S</string>
-    <string name="timestamp">Timestamp: %1S</string>
+    <string name="cur_date">Date:</string>
+    <string name="prev_date">Previous date:</string>
+    <string name="timestamp">Timestamp:</string>
     <string name="autoupdate_chbx">Automatic update</string>
     <string name="update_success">Updated</string>
     <string name="input_value">Input value</string>
     <string name="result">=</string>
+    <string name="zero_time">00:00:00</string>
+    <string name="default_value">0.0000</string>
+    <string name="default_charcode">\???\</string>
+    <string name="nominal">Nominal: x%1d</string>
+    <string name="checkbox_pref">checkbox_pref</string>
 </resources>

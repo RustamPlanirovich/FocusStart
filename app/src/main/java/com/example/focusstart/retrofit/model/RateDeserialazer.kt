@@ -1,10 +1,8 @@
 package com.example.focusstart.retrofit.model
 
-import android.util.Log
 import com.example.focusstart.util.parseDate
 import com.google.gson.*
 import java.lang.reflect.Type
-import java.text.ParseException
 import javax.inject.Inject
 
 class RateDeserialazer @Inject constructor(): JsonDeserializer<Rate> {

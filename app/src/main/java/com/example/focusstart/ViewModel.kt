@@ -1,6 +1,5 @@
 package com.example.focusstart
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,10 +14,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.awaitResponse
-import java.lang.NumberFormatException
 import java.util.*
 import javax.inject.Inject
-import kotlin.Exception
 
 @HiltViewModel
 class ViewModel @Inject constructor(private val repository: Repository):ViewModel() {

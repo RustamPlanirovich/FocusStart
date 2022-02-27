@@ -2,7 +2,6 @@ package com.example.focusstart.retrofit.model
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
-import javax.inject.Inject
 
 data class Currency (
     @SerializedName("ID")
